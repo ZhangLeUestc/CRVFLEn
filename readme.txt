@@ -12,7 +12,7 @@ The code is maintained by Zhang Le. If you have questions, please contact zhang.
 June. 2016
 
 
-This code has been tested on 64-bit Windows with OpenCV 2.40+ on CPU. We have not tested it on GPU but it is easy to extend based on it.
+This code has been tested on 64-bit Windows with OpenCV 2.40+ on CPU. We have not tested it on GPU but it is easy to extend based on the current implementation.
 
 
 Installation:
