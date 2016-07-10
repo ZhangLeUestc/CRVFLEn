@@ -21,7 +21,7 @@
 %	If you have problems about this software, please contact: jmzhang@bu.edu
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function result = MEEMTrack_v1(input, ext, show_img, init_rect, start_frame, end_frame)
+function result = CRVFLEn(input, ext, show_img, init_rect, start_frame, end_frame)
 
 addpath(genpath('.'));
 
