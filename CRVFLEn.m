@@ -64,8 +64,7 @@ result.type = 'rect';
 if show_img
     figure(1); set(1,'KeyPressFcn', @handleKey); 
 end
-% pos_update=[];
-% cost_pos=[];
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    main loop
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -86,13 +85,7 @@ for frame_id = start_frame:end_frame
     I_orig=imread(fullfile(input,file_list{frame_id}));
    
    
-%     if numel(S)<3
-%       I_orig1=zeros([S,1]);
-%       
-%       I_orig1(:,:,1)=I_orig;
-%       I_orig=I_orig1;
-%     end
-%     
+   
     %% intialization
     if frame_id==start_frame
         
@@ -123,10 +116,7 @@ for frame_id = start_frame:end_frame
         sampler.roi = rsz_rt(output,size(I_scale),config.search_roi,true);
     end
     I_crop = I_scale(round(sampler.roi(2):sampler.roi(4)),round(sampler.roi(1):sampler.roi(3)),:);
-    %I_crop=I_crop-median(I_crop(:));
-    %I_crop=I_crop/255;
-    %% compute feature images
-   % [BC F] = getFeatureRep(I_crop,config.hist_nbin);
+   
    
     %% tracking part
     
@@ -139,7 +129,7 @@ for frame_id = start_frame:end_frame
         fuzzy_weight = ones(size(label));
         createCNNTracker
           
-        %initSvmTracker(sampler.patterns_dt(train_mask,:), label, fuzzy_weight);
+        
         
        
         initCNNTracker(sampler.patterns_dt(:,:,:,train_mask), label, fuzzy_weight);
@@ -168,10 +158,7 @@ for frame_id = start_frame:end_frame
         end
 
         expertsDo(I_crop,config.expert_lambda,config.label_prior_sigma);
-      %  CNN_tracker.confidence 
-%         if CNN_tracker.confidence > config.RF_thresh
-%             output = CNN_tracker.output;
-%         end
+ 
         output = CNN_tracker.output;
         
         if config.display
@@ -194,26 +181,14 @@ for frame_id = start_frame:end_frame
         end
         
  CNN_tracker.update_count=0;
- % if mod( frame_id,3)==0    
-        
-    %    if CNN_tracker.confidence > config.CNN_thresh || CNN_tracker.update_count>30%&& ~CNN_tracker.failure config.RF_thresh
-    %if CNN_tracker.confidence <0.9 || CNN_tracker.update_count>15
+ 
      if CNN_tracker.confidence <0.9
            % disp('updating')
             train_mask = (sampler.costs<config.thresh_p) | (sampler.costs>=config.thresh_n);
            label = sampler.costs(train_mask) < config.thresh_p;
-%             pos_mask=(sampler.costs<config.thresh_p);
-%             neg_mask=(sampler.costs>=config.thresh_n);
-%             pos_update=cat(4,pos_update,sampler.patterns_dt(:,:,:,pos_mask));
-%             
-%             cost_pos=[cost_pos;sampler.costs(pos_mask)];
+
             skip_train = false;
-%             if CNN_tracker.confidence > 1.0 
-%                 score_ = -(sampler.patterns_dt(train_mask,:)*CNN_tracker.w'+CNN_tracker.Bias);
-%                 if prod(double(score_(label) > 1)) == 1 && prod(double(score_(~label)<1)) == 1
-%                     skip_train = true;
-%                 end
-%             end
+
         
             if ~skip_train
               
@@ -222,20 +197,9 @@ for frame_id = start_frame:end_frame
                 fuzzy_weight(~label) = 2*costs(~label)-1;
                 updateCNNTracker (sampler.patterns_dt(:,:,:,train_mask),label,fuzzy_weight);  
                  
-%                  cost=[ cost_pos;sampler.costs(neg_mask)];
-%                  data_update=cat(4,pos_update,sampler.patterns_dt(:,:,:,neg_mask));
-%                  nSam=numel(cost);
-%                  nPos=numel(cost_pos);
-%                  label=zeros(nSam,1);
-%                  label(1:nPos)=1;
-%                  
-%                  fuzzy_weight = ones(size(label));
-%                  fuzzy_weight(~label) = 2*cost(~label)-1;
-%                  updateCNNTracker (data_update,label,fuzzy_weight);  
+
                 CNN_tracker.update_count=0;
-%                 pos_update=[];
-%                 cost_pos=[];
-                
+
             end
         else % clear update_count
             CNN_tracker.update_count = CNN_tracker.update_count+1;
