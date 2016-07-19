@@ -1,10 +1,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	Implemetation of the tracker described in paper
+%   "Visual Tracking with Convolutional Random Vector Functional Link Neural Network "
+%    Le Zhang, P.N. Suganthan , IEEE Transaction on Cybernetics.
+%    Note the implementation is based on the following work:
 %	"MEEM: Robust Tracking via Multiple Experts using Entropy Minimization", 
 %   Jianming Zhang, Shugao Ma, Stan Sclaroff, ECCV, 2014
-%	
-%	Copyright (C) 2014 Jianming Zhang
-%
 %	This program is free software: you can redistribute it and/or modify
 %	it under the terms of the GNU General Public License as published by
 %	the Free Software Foundation, either version 3 of the License, or
@@ -18,7 +18,7 @@
 %	You should have received a copy of the GNU General Public License
 %	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
-%	If you have problems about this software, please contact: jmzhang@bu.edu
+%	If you have problems about this implementation, please contact: lzhang027@e.ntu.edu.sg
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function result = CRVFLEn(input, ext, show_img, init_rect, start_frame, end_frame)
